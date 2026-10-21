@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Municipality theme colours -->
+    <color name="municipality_beijing">#E53935</color>
+    <color name="municipality_shanghai">#D81B60</color>
+    <color name="municipality_tianjin">#36454F</color>
+    <color name="municipality_chongqing">#FB8C00</color>
+
+    <!-- Text and background colours -->
+    <color name="color_text_light">#FFFFFF</color>
+    <color name="color_text_dark">#212121</color>
+    <color name="color_default_background">#EEEEEE</color>
+</resources>
