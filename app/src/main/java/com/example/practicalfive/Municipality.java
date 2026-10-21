@@ -1,6 +1,11 @@
 package com.example.practicalfive;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +18,7 @@ public class Municipality extends AppCompatActivity {
     private TextView textViewName;
     private TextView textViewInfo;
     private ImageView imageViewMunicipality;
+    private Button buttonVisitSite;
 
     /** The validated, correctly capitalised municipality name. */
     private String municipalityName;
@@ -25,6 +31,7 @@ public class Municipality extends AppCompatActivity {
         textViewName = findViewById(R.id.textViewName);
         textViewInfo = findViewById(R.id.textViewInfo);
         imageViewMunicipality = findViewById(R.id.imageViewMunicipality);
+        buttonVisitSite = findViewById(R.id.buttonVisitSite);
 
         // Retrieve and re-validate the name passed via the Intent extra.
         String received = getIntent().getStringExtra(MainActivity.EXTRA_MUNICIPALITY);
@@ -38,6 +45,13 @@ public class Municipality extends AppCompatActivity {
         }
 
         updateInterface();
+
+        buttonVisitSite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openWebsite();
+            }
+        });
     }
 
     /** Sets the name, summary, image and colours for the selected municipality. */
@@ -86,5 +100,37 @@ public class Municipality extends AppCompatActivity {
 
         imageViewMunicipality.setImageResource(imageRes);
         imageViewMunicipality.setContentDescription(municipalityName);
+
+        // Visit site button: municipality colour background with light text.
+        buttonVisitSite.setBackgroundColor(municipalityColor);
+        buttonVisitSite.setTextColor(lightTextColor);
+    }
+
+    /** Opens the official website for the displayed municipality via an implicit Intent. */
+    private void openWebsite() {
+        String url;
+        switch (municipalityName) {
+            case "Beijing":
+                url = "https://english.beijing.gov.cn/";
+                break;
+            case "Shanghai":
+                url = "https://english.shanghai.gov.cn/";
+                break;
+            case "Tianjin":
+                url = "https://en.tj.gov.cn/";
+                break;
+            case "Chongqing":
+                url = "https://english.cq.gov.cn/";
+                break;
+            default:
+                return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.error_no_browser, Toast.LENGTH_LONG).show();
+        }
     }
 }
