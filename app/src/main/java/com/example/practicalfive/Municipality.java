@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class Municipality extends AppCompatActivity {
 
@@ -39,25 +40,30 @@ public class Municipality extends AppCompatActivity {
         updateInterface();
     }
 
-    /** Sets the name, summary and image for the selected municipality. */
+    /** Sets the name, summary, image and colours for the selected municipality. */
     private void updateInterface() {
+        int colorRes;
         int imageRes;
         int summaryIndex;
 
         switch (municipalityName) {
             case "Beijing":
+                colorRes = R.color.municipality_beijing;
                 imageRes = R.drawable.beijing;
                 summaryIndex = 0;
                 break;
             case "Shanghai":
+                colorRes = R.color.municipality_shanghai;
                 imageRes = R.drawable.shanghai;
                 summaryIndex = 1;
                 break;
             case "Chongqing":
+                colorRes = R.color.municipality_chongqing;
                 imageRes = R.drawable.chongqing;
                 summaryIndex = 2;
                 break;
             case "Tianjin":
+                colorRes = R.color.municipality_tianjin;
                 imageRes = R.drawable.tianjin;
                 summaryIndex = 3;
                 break;
@@ -65,10 +71,18 @@ public class Municipality extends AppCompatActivity {
                 return;
         }
 
-        textViewName.setText(municipalityName);
+        int municipalityColor = ContextCompat.getColor(this, colorRes);
+        int lightTextColor = ContextCompat.getColor(this, R.color.color_text_light);
 
+        // Name banner: municipality colour background with light, readable text.
+        textViewName.setText(municipalityName);
+        textViewName.setBackgroundColor(municipalityColor);
+        textViewName.setTextColor(lightTextColor);
+
+        // Information text: municipality colour on the neutral background.
         String[] summaries = getResources().getStringArray(R.array.municipalities_array);
         textViewInfo.setText(summaries[summaryIndex]);
+        textViewInfo.setTextColor(municipalityColor);
 
         imageViewMunicipality.setImageResource(imageRes);
         imageViewMunicipality.setContentDescription(municipalityName);
